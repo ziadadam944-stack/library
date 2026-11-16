@@ -2,13 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Library Registration - Academic Portal</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+            overscroll-behavior: none;
         }
 
         body {
@@ -18,9 +26,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
-            overflow: hidden;
-            position: relative;
         }
 
         /* Shared Background with Library Image */
@@ -38,7 +43,9 @@
 
         /* Tech Mesh Background Overlay */
         .tech-grid {
-            position: absolute;
+            position: fixed;
+            top: -50%;
+            left: -50%;
             width: 200%;
             height: 200%;
             background-image: 
@@ -52,24 +59,26 @@
 
         /* Glowing Orbs */
         .orb-1 {
-            position: absolute;
+            position: fixed;
             width: 450px;
             height: 450px;
             background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, rgba(0,0,0,0) 70%);
             top: -10%;
             left: -10%;
             z-index: 3;
+            pointer-events: none;
             animation: pulseOrb 10s infinite alternate ease-in-out;
         }
 
         .orb-2 {
-            position: absolute;
+            position: fixed;
             width: 500px;
             height: 500px;
             background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(0,0,0,0) 70%);
             bottom: -15%;
             right: -10%;
             z-index: 3;
+            pointer-events: none;
             animation: pulseOrb 12s infinite alternate-reverse ease-in-out;
         }
 
@@ -80,7 +89,7 @@
 
         /* Floating Academic Elements with Backlight Glow */
         .particle {
-            position: absolute;
+            position: fixed;
             font-size: 28px;
             user-select: none;
             pointer-events: none;
@@ -107,7 +116,8 @@
             position: relative;
             z-index: 10;
             text-align: center;
-            padding: 40px;
+            padding: 40px 20px;
+            width: 100%;
             max-width: 600px;
             animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -139,7 +149,6 @@
 
         /* Registration Card Container */
         .box {
-            position: relative;
             z-index: 10;
             background: rgba(13, 18, 36, 0.82);
             backdrop-filter: blur(24px);
@@ -148,7 +157,8 @@
             border-radius: 28px;
             box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7), 
                         inset 0 1px 0 rgba(255, 255, 255, 0.12);
-            width: 440px;
+            width: 92%;
+            max-width: 440px;
             border: 1px solid rgba(99, 102, 241, 0.25);
             opacity: 0;
             transform: translateY(30px) scale(0.96);
@@ -364,6 +374,113 @@
             from { opacity: 0; transform: translateY(-4px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* --- Success Popup Modal with Video --- */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(6, 9, 19, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .popup-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .popup-card {
+            background: rgba(13, 18, 36, 0.95);
+            border: 1px solid rgba(99, 102, 241, 0.35);
+            border-radius: 26px;
+            padding: 24px;
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.85), 
+                        0 0 35px rgba(99, 102, 241, 0.25);
+            transform: scale(0.85) translateY(25px);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .popup-overlay.show .popup-card {
+            transform: scale(1) translateY(0);
+        }
+
+        .popup-video-box {
+            width: 100%;
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            background: #060913;
+        }
+
+        .popup-video-box video {
+            width: 100%;
+            height: auto;
+            max-height: 320px;
+            display: block;
+            object-fit: contain;
+        }
+
+        .popup-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: #4ade80;
+            margin-bottom: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        .popup-desc {
+            font-size: 13.5px;
+            color: #cbd5e1;
+            line-height: 1.5;
+            margin-bottom: 22px;
+        }
+
+        .popup-btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            border: none;
+            border-radius: 14px;
+            color: #ffffff;
+            font-size: 14.5px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.35);
+            transition: all 0.3s ease;
+        }
+
+        .popup-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(34, 197, 94, 0.5);
+        }
+
+        @media (max-width: 480px) {
+            .box {
+                padding: 28px 20px;
+                border-radius: 22px;
+            }
+            .header h2 {
+                font-size: 22px;
+            }
+            .landing-title {
+                font-size: 32px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -439,11 +556,37 @@
         <div id="msg"></div>
     </div>
 
+    <!-- 3. Success Popup Modal with Video -->
+    <div class="popup-overlay" id="successPopup">
+        <div class="popup-card">
+            <div class="popup-video-box">
+                <video id="popupVideo" playsinline muted loop>
+                    <source src="https://raw.githubusercontent.com/ziadadam944-stack/library/bc45de296fcb5f2902fa000b87044c992392c511/oEW72VOVhAafG8RHQ9AKfjVDM5C8ImyxItegQM.mp4" type="video/mp4">
+                </video>
+            </div>
+            <h3 class="popup-title">تم التسجيل بنجاح</h3>
+            <p class="popup-desc">تم تسجيل بياناتك في قاعدة بيانات المكتبة بنجاح.</p>
+            <button type="button" class="popup-btn" id="closePopupBtn">تمام</button>
+        </div>
+    </div>
+
     <script>
         // Transition from Landing Page to Registration Page
         document.getElementById('startBtn').addEventListener('click', function() {
             document.getElementById('landing-page').classList.add('hidden');
             document.getElementById('reg-page').classList.add('active');
+        });
+
+        // Popup Elements
+        const successPopup = document.getElementById('successPopup');
+        const popupVideo = document.getElementById('popupVideo');
+        const closePopupBtn = document.getElementById('closePopupBtn');
+
+        // Close Popup & Pause Video
+        closePopupBtn.addEventListener('click', function() {
+            successPopup.classList.remove('show');
+            popupVideo.pause();
+            popupVideo.currentTime = 0;
         });
 
         // Form Submission to C++ WinSock Server via ngrok
@@ -471,6 +614,11 @@
                     msg.className = 'msg-success';
                     msg.innerText = '✅ Login successful!';
                     document.getElementById('regForm').reset();
+
+                    // Show Popup & Play Video from start
+                    successPopup.classList.add('show');
+                    popupVideo.currentTime = 0;
+                    popupVideo.play();
                 } else {
                     msg.className = 'msg-error';
                     msg.innerText = '❌ Server returned connection error.';
